@@ -1,16 +1,87 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
 
+    public static Player Instance { get; private set; }
+
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
+
     [SerializeField]
     private float m_MoveSpeed = 5f;
 
     private bool m_IsWalking;
+    private Vector3 m_LastInteractDir;
+    private ClearCounter m_SelectedCounter;
     [SerializeField]
     private GameInput m_Input;
+    [SerializeField]
+    private LayerMask m_InteractLayerMask;
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        m_Input.E_OnInteractAction += M_Input_E_OnInteractAction;
+    }
+
+    private void M_Input_E_OnInteractAction(object sender, System.EventArgs e)
+    {
+
+        Vector2 inputVector = m_Input.GetMovementNormalize();
+
+        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+
+        //防止没有方向键输出就不会检测的碰撞，（明明碰到了）
+        if (moveDir != Vector3.zero)
+        {
+            m_LastInteractDir = moveDir;
+        }
+
+        float interactDistance = 2f;
+        if (Physics.Raycast(transform.position, m_LastInteractDir, out RaycastHit raycastHit, interactDistance, m_InteractLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                clearCounter.Interact();
+            }
+            else
+            {
+                Debug.Log("No clearCounter");
+            }
+        }
+    }
+
     private void Update()
+    {
+        HandleInteraction();
+        HandleMovement();
+    }
+
+    public bool IsWalking()
+    {
+        return m_IsWalking;
+    }
+
+    private void HandleMovement()
     {
         Vector2 inputVector = m_Input.GetMovementNormalize();
 
@@ -46,7 +117,7 @@ public class Player : MonoBehaviour
         }
 
 
-        if(canMove)
+        if (canMove)
         {
             transform.position += moveDir * moveDistance;
         }
@@ -55,12 +126,52 @@ public class Player : MonoBehaviour
         m_IsWalking = moveDir != Vector3.zero;
 
         float rotateSpeed = 10f;
-        transform.forward = Vector3.Slerp(transform.forward,moveDir,Time.deltaTime * rotateSpeed);
+        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
 
-    public bool IsWalking()
+
+    private void HandleInteraction()
     {
-        return m_IsWalking;
+
+        Vector2 inputVector = m_Input.GetMovementNormalize();
+
+        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+
+        //防止没有方向键输出就不会检测的碰撞，（明明碰到了）
+        if (moveDir != Vector3.zero)
+        {
+            m_LastInteractDir = moveDir;
+        }
+
+        float interactDistance = 2f;
+        if (Physics.Raycast(transform.position, m_LastInteractDir, out RaycastHit raycastHit, interactDistance, m_InteractLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                if (clearCounter != m_SelectedCounter)
+                    SetSelectedCounter(clearCounter);
+
+            }
+            else
+            {
+                SetSelectedCounter(null);
+            }
+        }
+        else
+        {
+            SetSelectedCounter(null);
+        }
+
+        Debug.Log(m_SelectedCounter);
+
+    }
+
+    private void SetSelectedCounter(ClearCounter clearCounter)
+    { 
+        this.m_SelectedCounter = clearCounter;
+
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs { selectedCounter = m_SelectedCounter });
+
     }
 
 }
