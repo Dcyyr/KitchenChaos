@@ -162,7 +162,6 @@ public class Player : MonoBehaviour
             SetSelectedCounter(null);
         }
 
-        Debug.Log(m_SelectedCounter);
 
     }
 
