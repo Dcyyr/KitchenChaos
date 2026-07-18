@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour,IkitchenObjectParent
 {
 
     public static Player Instance { get; private set; }
@@ -10,19 +10,23 @@ public class Player : MonoBehaviour
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounter;
     }
 
     [SerializeField]
     private float m_MoveSpeed = 5f;
-
-    private bool m_IsWalking;
-    private Vector3 m_LastInteractDir;
-    private ClearCounter m_SelectedCounter;
     [SerializeField]
     private GameInput m_Input;
     [SerializeField]
     private LayerMask m_InteractLayerMask;
+    [SerializeField]
+    private Transform m_kitchenObjectHoldPoint;
+
+    private KitchenObject m_KitchenObject;
+    private bool m_IsWalking;
+    private Vector3 m_LastInteractDir;
+    private BaseCounter m_SelectedCounter;
+
 
 
     private void Awake()
@@ -40,34 +44,15 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        m_Input.E_OnInteractAction += M_Input_E_OnInteractAction;
+        m_Input.E_OnInteractAction += InteractAction;
     }
 
-    private void M_Input_E_OnInteractAction(object sender, System.EventArgs e)
+    private void InteractAction(object sender, System.EventArgs e)
     {
 
-        Vector2 inputVector = m_Input.GetMovementNormalize();
-
-        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
-
-        //防止没有方向键输出就不会检测的碰撞，（明明碰到了）
-        if (moveDir != Vector3.zero)
-        {
-            m_LastInteractDir = moveDir;
-        }
-
-        float interactDistance = 2f;
-        if (Physics.Raycast(transform.position, m_LastInteractDir, out RaycastHit raycastHit, interactDistance, m_InteractLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                clearCounter.Interact();
-            }
-            else
-            {
-                Debug.Log("No clearCounter");
-            }
-        }
+        if(m_SelectedCounter !=null)
+            m_SelectedCounter.Interact(this);
+       
     }
 
     private void Update()
@@ -146,10 +131,10 @@ public class Player : MonoBehaviour
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, m_LastInteractDir, out RaycastHit raycastHit, interactDistance, m_InteractLayerMask))
         {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if (clearCounter != m_SelectedCounter)
-                    SetSelectedCounter(clearCounter);
+                if (baseCounter != m_SelectedCounter)
+                    SetSelectedCounter(baseCounter);
 
             }
             else
@@ -165,7 +150,7 @@ public class Player : MonoBehaviour
 
     }
 
-    private void SetSelectedCounter(ClearCounter clearCounter)
+    private void SetSelectedCounter(BaseCounter clearCounter)
     { 
         this.m_SelectedCounter = clearCounter;
 
@@ -173,4 +158,28 @@ public class Player : MonoBehaviour
 
     }
 
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return m_kitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject obj)
+    {
+        this.m_KitchenObject = obj;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return m_KitchenObject;
+    }
+
+    public void ClearKitchenObject()
+    {
+        m_KitchenObject = null;
+    }
+
+    public bool HasKitchenObject()
+    {
+        return m_KitchenObject != null;
+    }
 }
