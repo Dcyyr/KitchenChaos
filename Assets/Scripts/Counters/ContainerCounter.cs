@@ -11,10 +11,10 @@ public class ContainerCounter : BaseCounter
     
     public override void Interact(Player player)
     {
-        if (m_KitchenObject == null)
+        //玩家手上没有东西
+        if (!player.HasKitchenObject())
         {
-            Transform kitchenObjectTransform = Instantiate(m_KitchenObjectPrefab.m_Prefab);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
+           KitchenObject.SpawnKitchenObject(m_KitchenObjectPrefab, player);
 
             OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
             //让这个物体不为0，就不会一直重复生成了

@@ -14,6 +14,11 @@ public class BaseCounter : MonoBehaviour,IkitchenObjectParent
 
     }
 
+    public virtual void InteractAlternate(Player player)
+    {
+
+    }
+
     public Transform GetKitchenObjectFollowTransform()
     {
         return m_CounterTopPoint;

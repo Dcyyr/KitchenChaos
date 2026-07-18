@@ -9,16 +9,24 @@ public class ClearCounter : BaseCounter
     
     public override void Interact(Player player)
     {
-        if (m_KitchenObject == null)
-        {
-            Transform kitchenObjectTransform = Instantiate(m_KitchenObjectPrefab.m_Prefab);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
-            //让这个物体不为0，就不会一直重复生成了
-        }
-        else
-        {
-            m_KitchenObject.SetKitchenObjectParent(player);
-        }
+       if(!HasKitchenObject())
+        {    //上面没有物体，玩家手上有物体
+            if (player.HasKitchenObject())
+            {   //放到台子上
+                player.GetKitchenObject().SetKitchenObjectParent(this);
+            }
+       }
+       else
+       {
+            if(player.HasKitchenObject())
+            {
+                
+            }
+            else
+            {
+                GetKitchenObject().SetKitchenObjectParent(player);
+            }
+       }
        
 
     }
