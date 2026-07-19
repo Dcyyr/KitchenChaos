@@ -1253,6 +1253,22 @@ PrefabInstance:
       propertyPath: m_CutKitchenObject
       value: 
       objectReference: {fileID: 11400000, guid: 545a1ec72deadab468fb2e2a292b7aed, type: 2}
+    - target: {fileID: 5554242911154510136, guid: b334c71bcf69cfe4fb22e92544b639d9, type: 3}
+      propertyPath: m_CutKitchenObject.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554242911154510136, guid: b334c71bcf69cfe4fb22e92544b639d9, type: 3}
+      propertyPath: 'm_CutKitchenObject.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5b792092f0cbf48439b71e3bf25ba8a0, type: 2}
+    - target: {fileID: 5554242911154510136, guid: b334c71bcf69cfe4fb22e92544b639d9, type: 3}
+      propertyPath: 'm_CutKitchenObject.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b82d740051827444f9ec4f892b156353, type: 2}
+    - target: {fileID: 5554242911154510136, guid: b334c71bcf69cfe4fb22e92544b639d9, type: 3}
+      propertyPath: 'm_CutKitchenObject.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: aa4155515bdb5934da4cae7e6e778ee1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
