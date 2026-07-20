@@ -1,10 +1,24 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CuttingCounter : BaseCounter
 {
 
+    public event EventHandler<OnProgressChangedEventArgs> OnProgressChanged;
+    public class OnProgressChangedEventArgs : EventArgs
+    {
+        public float m_ProgressNormalized;
+    }
+
+    public event EventHandler OnCut;
+
+
+
     [SerializeField]
     private CuttingPecipeSo[] m_CutKitchenObject;
+
+    private int m_CuttingProgress;
     public override void Interact(Player player)
     {
         if (!HasKitchenObject())
@@ -16,6 +30,14 @@ public class CuttingCounter : BaseCounter
                 {
                     //放到台子上切
                     player.GetKitchenObject().SetKitchenObjectParent(this);
+                    m_CuttingProgress = 0;
+
+                    CuttingPecipeSo cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+
+                    OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs
+                    {
+                        m_ProgressNormalized = (float)m_CuttingProgress / cuttingRecipeSO.m_CuttingProgressMax
+                    });
                 }
              
             }
@@ -38,11 +60,25 @@ public class CuttingCounter : BaseCounter
     {
         if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSO()))
         {
-            //获取对应的KitchenObjectSO
-            KitchenObjectSO OutputKitchenObject = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+            m_CuttingProgress++;
+            //放到台子上不会播放动画，只有切东西才会播放动画
+            OnCut?.Invoke(this, EventArgs.Empty);
+            CuttingPecipeSo cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
 
-            GetKitchenObject().DestroySelf();
-            KitchenObject.SpawnKitchenObject(OutputKitchenObject, this);
+            OnProgressChanged?.Invoke(this, new OnProgressChangedEventArgs
+            {
+                m_ProgressNormalized = (float)m_CuttingProgress / cuttingRecipeSO.m_CuttingProgressMax
+            });
+
+            //切好后变成片
+            if (m_CuttingProgress >= cuttingRecipeSO.m_CuttingProgressMax)
+            {
+                //获取对应的KitchenObjectSO
+                KitchenObjectSO OutputKitchenObject = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+                GetKitchenObject().DestroySelf();
+                KitchenObject.SpawnKitchenObject(OutputKitchenObject, this);
+            }
+         
         }
 
     }
@@ -70,6 +106,18 @@ public class CuttingCounter : BaseCounter
             }
         }
 
+        return null;
+    }
+
+    private  CuttingPecipeSo GetCuttingRecipeSOWithInput(KitchenObjectSO inputObject)
+    {
+        foreach (CuttingPecipeSo cuttingObj in m_CutKitchenObject)
+        {
+            if (cuttingObj.m_Input == inputObject)
+            {
+                return cuttingObj;
+            }
+        }
         return null;
     }
 }

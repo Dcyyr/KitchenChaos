@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 117c4c9a8a381a3488ac9c72ab56a6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_KitchenObjectPrefab: {fileID: 11400000, guid: 8d8d42b2576d5af4b932ba3a1ebedfdb, type: 2}
   m_CounterTopPoint: {fileID: 7873011647084452405}
+  m_KitchenObjectPrefab: {fileID: 11400000, guid: 8d8d42b2576d5af4b932ba3a1ebedfdb, type: 2}
 --- !u!4 &7114002174579103034 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6427900825540705848, guid: 4cc965f19719457488e23f1cd763e53b, type: 3}
