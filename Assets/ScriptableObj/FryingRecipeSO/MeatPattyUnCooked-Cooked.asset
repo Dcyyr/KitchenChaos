@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bcfb005392af0f4bb74419ef4706b37, type: 3}
-  m_Name: RawMeat
+  m_Script: {fileID: 11500000, guid: a2fecb2e25e1fb94fbd2671140c0d1dd, type: 3}
+  m_Name: MeatPattyUnCooked-Cooked
   m_EditorClassIdentifier: 
-  m_Prefab: {fileID: 2890770938628483982, guid: 8ae43d2a7d33915419eb4484a3b28404, type: 3}
-  m_Sprite: {fileID: 21300000, guid: aa1bacc24dde76e47b2ec0dd4e82385b, type: 3}
-  m_Name: 
+  m_Input: {fileID: 11400000, guid: 2c76d60af1ff25a45b5b63111e8b374b, type: 2}
+  m_Output: {fileID: 11400000, guid: b5fbacefe83c1014680b3488aa87c243, type: 2}
+  m_MaxFryingTime: 5

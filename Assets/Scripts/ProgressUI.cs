@@ -6,17 +6,19 @@ public class ProgressUI : MonoBehaviour
     [SerializeField]
     private Image m_Image;
     [SerializeField]
-    private CuttingCounter m_CuttingCounter;
+    private GameObject m_HasProgressGameObject;
+    private IHasProgress m_HasProgress;
 
     private void Start()
     {
-        m_CuttingCounter.OnProgressChanged += CuttingCounterOnProgressChanged;
+        m_HasProgress = m_HasProgressGameObject.GetComponent<IHasProgress>();
+        m_HasProgress.OnProgressChanged += HasPorgressOnProgressChanged;
 
         m_Image.fillAmount = 0f;
         HideUI();
     }
 
-    private void CuttingCounterOnProgressChanged(object sender, CuttingCounter.OnProgressChangedEventArgs e)
+    private void HasPorgressOnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
     {
         m_Image.fillAmount = e.m_ProgressNormalized;
 

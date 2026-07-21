@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bcfb005392af0f4bb74419ef4706b37, type: 3}
-  m_Name: RawMeat
+  m_Name: CookedMeat
   m_EditorClassIdentifier: 
-  m_Prefab: {fileID: 2890770938628483982, guid: 8ae43d2a7d33915419eb4484a3b28404, type: 3}
-  m_Sprite: {fileID: 21300000, guid: aa1bacc24dde76e47b2ec0dd4e82385b, type: 3}
+  m_Prefab: {fileID: 2890770938628483982, guid: a1dc47ef129f40740b2371b1a71901a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f1f50c7ef90b19741b26f2040806cf56, type: 3}
   m_Name: 

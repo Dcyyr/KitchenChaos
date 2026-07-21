@@ -86,9 +86,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClearCounter
       objectReference: {fileID: 0}
+    - target: {fileID: 5046348465148729943, guid: 4cc965f19719457488e23f1cd763e53b, type: 3}
+      propertyPath: m_Size.z
+      value: 1.3795533
+      objectReference: {fileID: 0}
+    - target: {fileID: 5046348465148729943, guid: 4cc965f19719457488e23f1cd763e53b, type: 3}
+      propertyPath: m_Center.z
+      value: 0.051068068
+      objectReference: {fileID: 0}
     - target: {fileID: 6427900825540705848, guid: 4cc965f19719457488e23f1cd763e53b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6427900825540705848, guid: 4cc965f19719457488e23f1cd763e53b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -96,7 +104,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6427900825540705848, guid: 4cc965f19719457488e23f1cd763e53b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6427900825540705848, guid: 4cc965f19719457488e23f1cd763e53b, type: 3}
       propertyPath: m_LocalRotation.w
